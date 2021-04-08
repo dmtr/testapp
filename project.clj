@@ -6,7 +6,9 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [ring/ring-core "1.9.2"]
                  [ring/ring-jetty-adapter "1.9.2"]
-                 [compojure "1.6.2"]]
+                 [ring/ring-json "0.4.0"]
+                 [compojure "1.6.2"]
+                 [com.datomic/datomic-free "0.9.5703.21"]]
   :main ^:skip-aot testapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all

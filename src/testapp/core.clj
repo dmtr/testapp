@@ -1,16 +1,25 @@
 (ns testapp.core
   (:require [ring.adapter.jetty :refer [run-jetty]]
-            [compojure.core :refer [GET defroutes]]
+            [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
+            [compojure.core :refer [GET POST defroutes]]
             [compojure.route :as route])
   (:gen-class))
 
-(defn handler [request]
+(defn create-request [request]
+  (let [{:keys [body]} request]
+    {:status 201
+     :body body}))
+
+(defn list-requests [request]
   {:status 200
-   :headers {"Content-Type" "text/plain"}
-   :body "Hello World!"})
+   :body []})
 
 (defroutes app
-  (GET "/hello" request (handler request))
+  (GET "/requests" [] (-> list-requests
+                          wrap-json-response))
+  (POST "/requests" [] (-> create-request
+                           (wrap-json-body {:keywords? true})
+                            wrap-json-response))
   (route/not-found "Page not found"))
 
 (defn parse-args
