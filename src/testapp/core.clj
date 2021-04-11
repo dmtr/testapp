@@ -2,17 +2,20 @@
   (:require [ring.adapter.jetty :refer [run-jetty]]
             [ring.middleware.json :refer [wrap-json-body wrap-json-response]]
             [compojure.core :refer [GET POST defroutes]]
-            [compojure.route :as route])
+            [compojure.route :as route]
+            [testapp.db :as db])
   (:gen-class))
 
 (defn create-request [request]
   (let [{:keys [body]} request]
+    (db/add-request {:request/title (:title body) :request/desc (:desc body)})
     {:status 201
      :body body}))
 
 (defn list-requests [request]
+  (let [res (db/get-requests)]
   {:status 200
-   :body []})
+   :body (vector res)}))
 
 (defroutes app
   (GET "/requests" [] (-> list-requests
@@ -31,4 +34,5 @@
   "Start web app"
   [& args]
   (let [params (parse-args args)]
+    (db/init-db)
     (run-jetty app {:port (:port params) :join? true})))

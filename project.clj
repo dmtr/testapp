@@ -8,7 +8,8 @@
                  [ring/ring-jetty-adapter "1.9.2"]
                  [ring/ring-json "0.4.0"]
                  [compojure "1.6.2"]
-                 [com.datomic/datomic-free "0.9.5703.21"]]
+                 [com.datomic/dev-local "0.9.232"]
+                 [com.datomic/client-cloud "0.8.105"]]
   :main ^:skip-aot testapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
