@@ -24,7 +24,13 @@
 (defn add-request [request]
   (d/transact @*conn {:tx-data [request]}))
 
-(def test-q '[:find ?request-title :where [_ :request/title ?request-title]])
+(def requests-query '[:find ?request-title ?request-desc
+                      :keys title desc
+                      :where [?title :request/title ?request-title]
+                      [?desc :request/desc ?request-desc]])
 
-(defn get-requests []
-  (d/q {:query test-q :limit 2 :args [(d/db @*conn)]}))
+(defn get-requests [limit offset]
+  (d/q {:query requests-query
+        :limit (if (nil? limit) 10 (Integer/parseInt limit))
+        :offset (if (nil? offset) 0 (Integer/parseInt offset))
+        :args [(d/db @*conn)]}))
