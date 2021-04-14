@@ -9,13 +9,26 @@
 (def *conn (atom nil))
                      
 (def requests-schema 
-  [{:db/ident :request/title 
+  [{:db/ident :request/id 
+    :db/valueType :db.type/uuid 
+    :db/cardinality 
+    :db.cardinality/one :db/doc "Request ID" :db/unique :db.unique/identity} 
+   {:db/ident :request/title 
     :db/valueType :db.type/string 
     :db/cardinality 
     :db.cardinality/one :db/doc "Request title"} 
    {:db/ident :request/desc 
     :db/valueType :db.type/string 
-    :db/cardinality :db.cardinality/one :db/doc "Request description"}])
+    :db/cardinality :db.cardinality/one :db/doc "Request description"}
+   {:db/ident :request/reporter 
+    :db/valueType :db.type/string 
+    :db/cardinality :db.cardinality/one :db/doc "Request reporter"}
+   {:db/ident :request/assignee 
+    :db/valueType :db.type/string 
+    :db/cardinality :db.cardinality/one :db/doc "Request assignee"}
+   {:db/ident :request/date 
+    :db/valueType :db.type/string 
+    :db/cardinality :db.cardinality/one :db/doc "Request date"}])
 
 (defn init-db []
   (d/create-database client {:db-name db-name})
@@ -25,10 +38,15 @@
 (defn add-request [request]
   (d/transact @*conn {:tx-data [request]}))
 
-(def requests-query '[:find ?request-title ?request-desc
-                      :keys title desc
-                      :where [?title :request/title ?request-title]
-                      [?desc :request/desc ?request-desc]])
+(def requests-query '[:find ?request-id ?request-title ?request-desc
+                            ?request-reporter ?request-assignee ?request-date
+                      :keys id title desc reporter assignee date
+                      :where [?id :request/id ?request-id]
+                      [?title :request/title ?request-title]
+                      [?desc :request/desc ?request-desc]
+                      [?reporter :request/reporter ?request-reporter]
+                      [?assignee :request/assignee ?request-assignee]
+                      [?date :request/date ?request-date]])
 
 (defn get-requests [limit offset]
   (d/q {:query requests-query

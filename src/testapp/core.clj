@@ -12,7 +12,12 @@
 
 (defn create-request [request]
   (let [{:keys [body]} request]
-    (db/add-request {:request/title (:title body) :request/desc (:desc body)})
+    (db/add-request {:request/id (utils/uuid)
+                     :request/title (:title body)
+                     :request/desc (:desc body)
+                     :request/reporter (:reporter body)
+                     :request/assignee (:assignee body)
+                     :request/date (:date body)})
     {:status 201
      :body body}))
 
