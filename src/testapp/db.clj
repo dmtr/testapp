@@ -1,5 +1,6 @@
 (ns testapp.db
-  (:require [datomic.client.api :as d]))
+  (:require [datomic.client.api :as d]
+            [testapp.utils :as utils]))
 
 (def client (d/client {:server-type :dev-local :system "dev" :storage-dir :mem}))
 
@@ -31,6 +32,6 @@
 
 (defn get-requests [limit offset]
   (d/q {:query requests-query
-        :limit (if (nil? limit) 10 (Integer/parseInt limit))
-        :offset (if (nil? offset) 0 (Integer/parseInt offset))
+        :limit (utils/parse-int-safe limit 10)
+        :offset (utils/parse-int-safe offset 0)
         :args [(d/db @*conn)]}))

@@ -5,8 +5,9 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [compojure.core :refer [GET POST defroutes]]
             [compojure.route :as route]
+            [clojure.tools.logging :refer [info]]
             [testapp.db :as db]
-            [clojure.tools.logging :refer [info]])
+            [testapp.utils :as utils])
   (:gen-class))
 
 (defn create-request [request]
@@ -35,7 +36,7 @@
 (defn parse-args
   [args]
   (let [port (first args)]
-    {:port (if (nil? port) 8080 (Integer/parseInt port))}))
+    {:port (utils/parse-int-safe port 8080)}))
 
 (defn -main
   "Start web app"
