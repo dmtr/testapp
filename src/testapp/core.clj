@@ -18,8 +18,7 @@
                      :request/reporter (:reporter body)
                      :request/assignee (:assignee body)
                      :request/date (:date body)})
-    {:status 201
-     :body body}))
+    {:status 201}))
 
 (defn list-requests [request]
   (let [limit (get-in request [:params :limit])
