@@ -7,18 +7,21 @@
             [compojure.route :as route]
             [clojure.tools.logging :refer [info]]
             [testapp.db :as db]
-            [testapp.utils :as utils])
+            [testapp.utils :as utils]
+            [testapp.spec :refer [validate-request]])
   (:gen-class))
 
 (defn create-request [request]
-  (let [{:keys [body]} request]
-    (db/add-request {:request/id (utils/uuid)
-                     :request/title (:title body)
-                     :request/desc (:desc body)
-                     :request/reporter (:reporter body)
-                     :request/assignee (:assignee body)
-                     :request/date (:date body)})
-    {:status 201}))
+  (let [{:keys [body]} request valid? (validate-request body) status (if valid? 201 400)]
+    (when valid?
+      (db/add-request {:request/id (utils/uuid)
+                       :request/title (:title body)
+                       :request/desc (:desc body)
+                       :request/reporter (:reporter body)
+                       :request/assignee (:assignee body)
+                       :request/date (:date body)}))
+      {:status status}
+    ))
 
 (defn list-requests [request]
   (let [limit (get-in request [:params :limit])
