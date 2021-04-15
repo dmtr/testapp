@@ -14,4 +14,4 @@
   (s/keys :req-un [::title ::desc ::reporter ::assignee ::date]))
 
 (defn validate-request [request]
-  (s/valid? :unq/request request))
+  (s/explain-data :unq/request request))

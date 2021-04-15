@@ -12,15 +12,19 @@
   (:gen-class))
 
 (defn create-request [request]
-  (let [{:keys [body]} request valid? (validate-request body) status (if valid? 201 400)]
-    (when valid?
-      (db/add-request {:request/id (utils/uuid)
+  (let [{:keys [body]} request
+        errors? (validate-request body)
+        status (if errors? 400 201)
+        id (utils/uuid)
+        response (if errors? errors? {:id id})]
+    (when (nil? errors?)
+      (db/add-request {:request/id id
                        :request/title (:title body)
                        :request/desc (:desc body)
                        :request/reporter (:reporter body)
                        :request/assignee (:assignee body)
                        :request/date (:date body)}))
-      {:status status}
+      {:status status :body response}
     ))
 
 (defn list-requests [request]
