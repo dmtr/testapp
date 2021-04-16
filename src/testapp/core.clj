@@ -14,9 +14,8 @@
 (defn create-request [request]
   (let [{:keys [body]} request
         errors? (validate-request body)
-        status (if errors? 400 201)
         id (utils/uuid)
-        response (if errors? errors? {:id id})]
+        [status response] (if errors? [400 errors?] [201 {:id id}])]
     (when (nil? errors?)
       (db/add-request {:request/id id
                        :request/title (:title body)

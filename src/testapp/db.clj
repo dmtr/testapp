@@ -41,12 +41,13 @@
 (def requests-query '[:find ?request-id ?request-title ?request-desc
                             ?request-reporter ?request-assignee ?request-date
                       :keys id title desc reporter assignee date
-                      :where [?id :request/id ?request-id]
-                      [?title :request/title ?request-title]
-                      [?desc :request/desc ?request-desc]
-                      [?reporter :request/reporter ?request-reporter]
-                      [?assignee :request/assignee ?request-assignee]
-                      [?date :request/date ?request-date]])
+                      :where [?e :request/id ?request-id]
+                             [?e :request/title ?request-title]
+                             [?e :request/desc ?request-desc]
+                             [?e :request/reporter ?request-reporter]
+                             [?e :request/assignee ?request-assignee]
+                             [?e :request/date ?request-date]])
+
 
 (defn get-requests [limit offset]
   (d/q {:query requests-query
