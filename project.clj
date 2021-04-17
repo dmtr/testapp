@@ -10,7 +10,9 @@
                  [compojure "1.6.2"]
                  [com.datomic/dev-local "0.9.232"]
                  [com.datomic/client-cloud "0.8.105"]
-                 [org.clojure/tools.logging "1.1.0"]]
+                 [org.clojure/tools.logging "1.1.0"]
+                 [ring/ring-mock "0.4.0"]
+                 [org.clojure/data.json "2.2.0"]]
   :main ^:skip-aot testapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
