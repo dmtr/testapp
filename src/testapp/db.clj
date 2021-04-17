@@ -54,3 +54,7 @@
         :limit (utils/parse-int-safe limit 10)
         :offset (utils/parse-int-safe offset 0)
         :args [(d/db @*conn)]}))
+
+
+(defn clear-db []
+  (d/delete-database client {:db-name db-name}))

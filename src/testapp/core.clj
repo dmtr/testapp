@@ -31,7 +31,7 @@
         offset (get-in request [:params :offset])
         res (db/get-requests limit offset)]
   {:status 200
-   :body res}))
+   :body {:results res :count (count res)}}))
 
 (defroutes app
   (GET "/requests" [] (-> list-requests
