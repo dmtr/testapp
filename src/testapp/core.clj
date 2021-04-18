@@ -8,7 +8,9 @@
             [clojure.tools.logging :refer [info]]
             [testapp.db :as db]
             [testapp.utils :as utils]
-            [testapp.spec :refer [validate-request]])
+            [testapp.spec :refer [validate-request]]
+            [hiccup
+              [page :refer [html5 include-js]]])
   (:gen-class))
 
 (defn create-request [request]
@@ -33,7 +35,17 @@
   {:status 200
    :body {:results res :count (count res)}}))
 
+(defn index-page []
+  (html5
+    [:head
+      [:title "Hello World"]
+      (include-js "/js/main.js")]
+    [:body
+      [:h1 "Hello World"]]))
+
 (defroutes app
+  (GET "/" [] (index-page))
+  (route/resources "/")
   (GET "/requests" [] (-> list-requests
                           wrap-keyword-params
                           wrap-params
