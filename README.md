@@ -1,44 +1,30 @@
 # testapp
 
-FIXME: description
-
-## Installation
-
-Download from http://example.com/FIXME.
 
 ## Usage
 
-FIXME: explanation
+Build and run:
 
-    $ java -jar testapp-0.1.0-standalone.jar [args]
+    $ make
 
-## Options
+Run tests:
 
-FIXME: listing of options this app accepts.
+    $ make test	
 
-## Examples
+## Request examples
 
-...
+Create request:
+```
+curl -H "Content-Type: application/json" -X POST --data '{"title": "test", "desc": "new request", "reporter": "reporter", "assignee": "assignee", "date": "12-02-2021"}' 'http://localhost:8080/requests'
+```
 
-### Bugs
+Get requests list:
+```curl  'http://localhost:8080/requests?limit=20'```
 
-...
+## Possible enhancements
 
-### Any Other Sections
-### That You Think
-### Might be Useful
-
-## License
-
-Copyright © 2021 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+1. Add Swagger
+1. Better validation
+1. Better error message
+1. Add filters
+1. Change database schema: Reporter and Assignee must be independent entities
