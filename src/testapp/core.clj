@@ -38,19 +38,20 @@
 (defn index-page []
   (html5
     [:head
-      [:title "Hello World"]
-      (include-js "/js/main.js")]
+      [:title "test app"]]
     [:body
-      [:h1 "Hello World"]]))
+      [:div#app]
+      (include-js "/js/main.js")
+      (include-js "/js/run.js")]))
 
 (defroutes app
   (GET "/" [] (index-page))
   (route/resources "/")
-  (GET "/requests" [] (-> list-requests
+  (GET "/api/requests" [] (-> list-requests
                           wrap-keyword-params
                           wrap-params
                           wrap-json-response))
-  (POST "/requests" [] (-> create-request
+  (POST "/api/requests" [] (-> create-request
                            (wrap-json-body {:keywords? true})
                             wrap-json-response))
   (route/not-found "Page not found"))
