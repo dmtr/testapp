@@ -16,7 +16,10 @@
                  [org.clojure/clojurescript "1.10.844"
                   :exclusions [org.apache.ant/ant]]
                  [hiccup "1.0.4"]
-                 [reagent "1.0.0"]]
+                 [reagent "1.0.0"]
+                 [re-frame "1.2.0"]
+                 [day8.re-frame/http-fx "v0.2.0"]
+                 [cljs-ajax "0.7.3"]]
   :main ^:skip-aot testapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
