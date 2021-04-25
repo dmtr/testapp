@@ -25,37 +25,39 @@
          ^{:key (:id request)} [request-item request])]]))
 
 (defn request-form []
-  (let [default {:title "" :desc "" :reporter "" :assignee "" :date ""}
+  (let [default {:title "" :desc "" :reporter "reporter1" :assignee "assignee1" :date ""}
         request (reagent/atom default)
         post-request (fn [event request]
                        (.preventDefault event)
                        (dispatch [:post-request @request])
                        )]
-    [:div.form-container 
-      [:div 
-       [:h1 "New request"]]
+    [:div.form-container
+      [:h1 "New Request"]
       [:form
         [:fieldset
+          [:legend "Request"]
+
           [:input {:type          "text"
                    :placeholder   "Title"
                    :default-value ""
-                   :on-change     #(swap! request assoc :title (-> % .-target .-value))}]]
-        [:fieldset
-          [:textarea {:rows          "4"
+                   :on-change     #(swap! request assoc :title (-> % .-target .-value))}]
+
+          [:textarea {:rows          "3"
                       :placeholder   "Description"
                       :default-value ""
-                      :on-change     #(swap! request assoc :desc (-> % .-target .-value))}]]
-        [:fieldset
-          [:input {:type          "text"
-                   :placeholder   "Reporter"
-                   :default-value ""
-                   :on-change     #(swap! request assoc :reporter (-> % .-target .-value))}]]
-        [:fieldset
-          [:input {:type          "text"
-                   :placeholder   "Assignee"
-                   :default-value ""
-                   :on-change     #(swap! request assoc :assignee (-> % .-target .-value))}]]
-        [:fieldset
+                      :on-change     #(swap! request assoc :desc (-> % .-target .-value))}]
+          [:div.form-group
+              [:label "Reporter:"]
+              [:select.form-control {:field :list :id :many.options :on-change #(swap! request assoc :reporter (-> % .-target .-value))}
+               [:option {:key :reporter1} "reporter1"]
+               [:option {:key :reporter2} "reporter2"]]]
+
+          [:div.form-group
+              [:label "Assignee:"]
+              [:select.form-control {:field :list :id :many.options :on-change #(swap! request assoc :assignee (-> % .-target .-value))}
+               [:option {:key :assignee1} "assignee1"]
+               [:option {:key :assignee2} "assignee2"]]]
+
           [:input {:type          "date"
                    :placeholder   "Date"
                    :default-value ""
@@ -70,7 +72,7 @@
        ^{:key key} [:li (str key " " val)])]))
 
 (defn request-app []
- [:div 
+ [:div.container
   [request-form]
   [errors-list]
   [requests-list]])
