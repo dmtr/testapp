@@ -28,10 +28,11 @@
 
 (reg-event-db
  :get-requests-success
- (fn [db [_ {requests :results}]]
+ (fn [db [_ {requests :results total :count}]]
    (-> db
        (assoc-in [:loading :requests] false)
-       (assoc  :requests (index-by :id requests)))))   
+       (assoc  :requests (index-by :id requests))
+       (assoc :total total))))   
 
 (reg-event-db
  :api-request-error
@@ -62,6 +63,11 @@
     :dispatch [:get-requests]}))
 
 (reg-sub
- :errors ;; usage: 
+ :errors
  (fn [db _]
    (:errors db)))
+
+(reg-sub
+  :total
+  (fn [db _]
+    (:total db)))

@@ -17,9 +17,9 @@
      [:p (:date request)]]])
 
 (defn requests-list []
-  (let [requests @(subscribe [:requests])]
+  (let [requests @(subscribe [:requests]) total @(subscribe [:total])]
     [:div 
-      [:h1 "Requests"]
+      [:h1 "Requests total:" " " total]
       [:ul#requests-list
         (for [request requests]
          ^{:key (:id request)} [request-item request])]]))
