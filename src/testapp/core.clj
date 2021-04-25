@@ -31,9 +31,10 @@
 (defn list-requests [request]
   (let [limit (get-in request [:params :limit])
         offset (get-in request [:params :offset])
-        res (db/get-requests limit offset)]
+        res (db/get-requests limit offset)
+        total (db/get-total)]
   {:status 200
-   :body {:results res :count (count res)}}))
+   :body {:results res :count total}}))
 
 (defn index-page []
   (html5
