@@ -10,7 +10,7 @@
             [testapp.utils :as utils]
             [testapp.spec :refer [validate-request]]
             [hiccup
-              [page :refer [html5 include-js]]])
+              [page :refer [html5 include-js include-css]]])
   (:gen-class))
 
 (defn create-request [request]
@@ -39,7 +39,8 @@
 (defn index-page []
   (html5
     [:head
-      [:title "test app"]]
+      [:title "test app"]
+      (include-css "/css/main.css")]
     [:body
       [:div#app]
       (include-js "/js/main.js")

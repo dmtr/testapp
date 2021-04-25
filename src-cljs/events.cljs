@@ -35,9 +35,9 @@
 
 (reg-event-db
  :api-request-error
- (fn [db [_ request-type _]]
+ (fn [db [_ request-type res]]
    (-> db
-       (assoc-in [:errors request-type] "server error")
+       (assoc-in [:errors request-type] (:response res))
        (assoc-in [:loading request-type] false))))
 
 (reg-event-fx
@@ -60,3 +60,8 @@
                   (assoc-in [:loading :requests] false)
                   (update-in [:errors] dissoc :request))
     :dispatch [:get-requests]}))
+
+(reg-sub
+ :errors ;; usage: 
+ (fn [db _]
+   (:errors db)))
