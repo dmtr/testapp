@@ -1,25 +1,16 @@
 # testapp
 
-
 ## Usage
 
 Build and run:
 
     $ make
 
+Application is available on http://localhost:8080
+
 Run tests:
 
     $ make test	
-
-## Request examples
-
-Create request:
-```
-curl -H "Content-Type: application/json" -X POST --data '{"title": "test", "desc": "new request", "reporter": "reporter", "assignee": "assignee", "date": "12-02-2021"}' 'http://localhost:8080/requests'
-```
-
-Get requests list:
-```curl  'http://localhost:8080/requests?limit=20'```
 
 ## Possible enhancements
 
@@ -28,3 +19,6 @@ Get requests list:
 1. Better error message
 1. Add filters
 1. Change database schema: Reporter and Assignee must be independent entities
+1. Better UI/UX
+1. Fix order
+1. Add request status
