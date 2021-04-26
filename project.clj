@@ -12,9 +12,21 @@
                  [com.datomic/client-cloud "0.8.105"]
                  [org.clojure/tools.logging "1.1.0"]
                  [ring/ring-mock "0.4.0"]
-                 [org.clojure/data.json "2.2.0"]]
+                 [org.clojure/data.json "2.2.0"]
+                 [org.clojure/clojurescript "1.10.844"
+                  :exclusions [org.apache.ant/ant]]
+                 [hiccup "1.0.4"]
+                 [reagent "1.0.0"]
+                 [re-frame "1.2.0"]
+                 [day8.re-frame/http-fx "v0.2.0"]
+                 [cljs-ajax "0.7.3"]]
   :main ^:skip-aot testapp.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}}
-  :plugins [[cider/cider-nrepl "0.24.0"]])
+  :cljsbuild {
+    :builds [{:source-paths ["src-cljs"]
+              :compiler {:output-to "resources/public/js/main.js"
+                         :optimizations :whitespace
+                         :pretty-print true}}]}
+  :plugins [[cider/cider-nrepl "0.24.0"] [lein-cljsbuild "1.1.8"]])

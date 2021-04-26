@@ -8,7 +8,9 @@
             [clojure.tools.logging :refer [info]]
             [testapp.db :as db]
             [testapp.utils :as utils]
-            [testapp.spec :refer [validate-request]])
+            [testapp.spec :refer [validate-request]]
+            [hiccup
+              [page :refer [html5 include-js include-css]]])
   (:gen-class))
 
 (defn create-request [request]
@@ -29,16 +31,29 @@
 (defn list-requests [request]
   (let [limit (get-in request [:params :limit])
         offset (get-in request [:params :offset])
-        res (db/get-requests limit offset)]
+        res (db/get-requests limit offset)
+        total (db/get-total)]
   {:status 200
-   :body {:results res :count (count res)}}))
+   :body {:results res :count total}}))
+
+(defn index-page []
+  (html5
+    [:head
+      [:title "test app"]
+      (include-css "/css/main.css")]
+    [:body
+      [:div#app]
+      (include-js "/js/main.js")
+      (include-js "/js/run.js")]))
 
 (defroutes app
-  (GET "/requests" [] (-> list-requests
+  (GET "/" [] (index-page))
+  (route/resources "/")
+  (GET "/api/requests" [] (-> list-requests
                           wrap-keyword-params
                           wrap-params
                           wrap-json-response))
-  (POST "/requests" [] (-> create-request
+  (POST "/api/requests" [] (-> create-request
                            (wrap-json-body {:keywords? true})
                             wrap-json-response))
   (route/not-found "Page not found"))

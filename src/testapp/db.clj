@@ -58,3 +58,13 @@
 
 (defn clear-db []
   (d/delete-database client {:db-name db-name}))
+
+(defn get-total []
+  (let [total (-> (d/q {:query '[:find (count ?e)
+                   :where [?e :request/id]]
+                   :args [(d/db @*conn)]})
+              (first)
+              (first))]
+    (if (nil? total) 
+      0
+      total)))

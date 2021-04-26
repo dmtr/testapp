@@ -17,10 +17,10 @@
                    :desc "descr"
                    :reporter "Smith" 
                    :assignee "Snow" 
-                   :date "02-02-2021"})
+                   :date "2021-05-06"})
 
 (deftest create-request-test
-  (let [res (app (-> (mock/request :post "/requests")
+  (let [res (app (-> (mock/request :post "/api/requests")
                   (mock/json-body request-body)))]
     (is (= (:status res) 201 ))
     (is (contains? (json/read-str (:body res) ) "id"))))
@@ -30,12 +30,12 @@
               :request/desc "important" 
               :request/reporter "John"
               :request/assignee "Nick" 
-              :request/date "02-02-2021"
+              :request/date "2021-04-05"
               :request/id (utils/uuid)})
 
 (deftest list-requests-test
   (let [_ (add-request request)
-        res (app (-> (mock/request :get "/requests")))
+        res (app (-> (mock/request :get "/api/requests")))
         body (json/read-str (:body res))
         headers (:headers res)
         count_ (get body "count")

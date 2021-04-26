@@ -1,7 +1,7 @@
 (ns testapp.spec
   (:require [clojure.spec.alpha :as s]))
 
-(def date-regex #"^[0-9]{2}-[0-9]{2}-[0-9]{4}$")
+(def date-regex #"^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 (s/def ::date-type (s/and string? #(re-matches date-regex %)))
 
 (s/def ::title string?) 
