@@ -6,6 +6,8 @@
             [cljs.pprint :refer [pprint]]
             [testapp.events]))
 
+(def per-page 5)
+
 (defn request-item [request]
   [:li
     [:div 
@@ -17,12 +19,21 @@
      [:p (:date request)]]])
 
 (defn requests-list []
-  (let [requests @(subscribe [:requests]) total @(subscribe [:total])]
+  (let [requests @(subscribe [:requests]) total @(subscribe [:total])
+        filter_ @(subscribe [:filter])
+        offset (:offset filter_)]
     [:div 
       [:h1 "Requests total:" " " total]
       [:ul#requests-list
         (for [request requests]
-         ^{:key (:id request)} [request-item request])]]))
+         ^{:key (:id request)} [request-item request])]
+      [:button#next-button
+        {:on-click #(dispatch [:get-requests {:limit per-page :offset (- offset per-page)}]) :disabled (< (- offset per-page) 0)}
+        "Prev"]
+      [:button#next-button
+        {:on-click #(dispatch [:get-requests {:limit per-page :offset (+ per-page offset)}]) :disabled (>= (+ offset per-page) total)}
+        "Next"]
+      ]))
 
 (defn request-form []
   (let [default {:title "" :desc "" :reporter "reporter1" :assignee "assignee1" :date ""}
@@ -78,5 +89,5 @@
   [requests-list]])
 
 (defn ^:export run []
-  (dispatch-sync [:get-requests])
+  (dispatch-sync [:get-requests {:limit per-page :offset 0}])
   (rdom/render [request-app] (js/document.getElementById "app")))

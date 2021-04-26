@@ -6,7 +6,7 @@
 (defn index-by [key coll]
   (into {} (map (juxt key identity) coll)))
 
-(def default-db {:requests (hash-map)})
+(def default-db {:requests (hash-map) :filter (hash-map)})
 
 (reg-sub
   :requests
@@ -71,3 +71,8 @@
   :total
   (fn [db _]
     (:total db)))
+
+(reg-sub 
+  :filter
+  (fn [db _]
+    (:filter db)))
